@@ -1,22 +1,23 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom'
 import { ShopifyClient } from './shopify/ShopifyClient';
 import { PriceFormat } from './shopify/PriceFormat';
 
+const options = [
+  {value: 'ID', text: 'Featured'},
+  {value: 'TITLE-ASCENDING', text: 'Alphabetically (A-Z)'},
+  {value: 'TITLE-DESCENDING', text: 'Alphabetically (Z-A)'},
+  {value: 'PRICE-ASCENDING', text: 'Price (lowest to highest)'},
+  {value: 'PRICE-DESCENDING', text: 'Price (highest to lowest)'},
+  {value: 'CREATED-ASCENDING', text: 'Date (oldest to newest)'},
+  {value: 'CREATED-DESCENDING', text: 'Date (newest to oldest)'},
+];
+
 const ProductList = () => {
-
-  const options = [
-    {value: 'ID', text: 'Featured'},
-    {value: 'TITLE-ASCENDING', text: 'Alphabetically (A-Z)'},
-    {value: 'TITLE-DESCENDING', text: 'Alphabetically (Z-A)'},
-    {value: 'PRICE-ASCENDING', text: 'Price (lowest to highest)'},
-    {value: 'PRICE-DESCENDING', text: 'Price (highest to lowest)'},
-    {value: 'CREATED-ASCENDING', text: 'Date (oldest to newest)'},
-    {value: 'CREATED-DESCENDING', text: 'Date (newest to oldest)'},
-  ];
-
-  const mappedOptions = {
+  
+  const mappedOptions = useMemo(() => {
+    return {
     'ID': {sortKey: 'ID'},
     'TITLE-ASCENDING': {sortKey: 'TITLE', reverse: false},
     'TITLE-DESCENDING': {sortKey: 'TITLE', reverse: true},
@@ -25,15 +26,20 @@ const ProductList = () => {
     'CREATED-ASCENDING': {sortKey: 'CREATED_AT', reverse: false},
     'CREATED-DESCENDING': {sortKey: 'CREATED_AT', reverse: true}
   }
+  }, []);
+  
   const [sortBy, setSortBy] = useState('ID')
   const [products, setProducts] = useState([])
-  const query = {first: 60}
+
+  const query = useMemo(() => {
+    return {first: 60};
+  }, []);
 
   useEffect(() => {
     ShopifyClient.product.fetchQuery({...query, ...mappedOptions[sortBy]}).then((products) => {
       setProducts(products)
     });
-  }, [sortBy, mappedOptions, query])
+  }, [sortBy, query, mappedOptions])
 
   const selectOptions = () => {
     return options.map((option) => {
