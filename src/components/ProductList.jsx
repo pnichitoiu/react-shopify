@@ -33,7 +33,7 @@ const ProductList = () => {
     ShopifyClient.product.fetchQuery({...query, ...mappedOptions[sortBy]}).then((products) => {
       setProducts(products)
     });
-  }, [sortBy])
+  }, [sortBy, mappedOptions, query])
 
   const selectOptions = () => {
     return options.map((option) => {

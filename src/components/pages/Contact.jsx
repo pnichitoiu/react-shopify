@@ -64,15 +64,6 @@ const Contact = () => {
     )
   }
 
-  console.log(contact)
-
-  const initialFormState = {
-    username: "",
-    email: "",
-    password: "",
-    hasConsented: false,
-    };
-
   return (
     <div className="mx-auto container max-w-7xl items-center justify-between p-6 lg:px-8">
       <h1 className="text-2xl">{contact.data.form_title[0].text}</h1>

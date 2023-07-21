@@ -68,7 +68,6 @@ export const CartProvider = ({children}) => {
       ShopifyClient.checkout.fetch(checkoutId).then((result) => {
         setCheckout(result);
         setCartProducts(result.lineItems);
-        console.log(result.lineItems);
       });
       return;
     }

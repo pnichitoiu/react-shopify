@@ -12,7 +12,10 @@ const Cart = () => {
 
   const openCheckout = () => {
     localStorage.removeItem('checkout_id')
-    window.open(cart.checkout.webUrl);
+    if (cart.checkout.checkout_id) {
+      window.open(cart.checkout.webUrl);
+    }
+    
   }
 
   return (
